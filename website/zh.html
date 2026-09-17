@@ -48,7 +48,7 @@
 <article class="card"><div class="card-number">02 / 效率</div><h3>预算约束下的森林构建</h3><p>共享扩展预算、增益优先生长、验证引导剪枝、提前拒绝和 Root 分数缓存，将计算资源集中在有潜力的分支上。</p></article>
 <article class="card"><div class="card-number">03 / 集成</div><h3>通过 Select / Merge 产生最终 Skill</h3><p>通过直接选择（Select）或分数引导的层级合并（Merge），聚合各树的 local winner，产生最终可部署的 Skill。Merge 在每一层合并相邻的 Skill，保留兼容规则，并依据完整训练集上的可比分数引导冲突消解，逐层合并直至得到一个 Skill。</p></article>
 </div></section>
-<section class="section soft-section" id="method"><div class="container"><div class="section-label">方法</div><h2>从独立优化树到一个 Skill。</h2><p class="section-intro">所有树从同一个初始 Skill 出发。每棵树仅使用公开训练数据，基于执行反馈探索各自的更新。</p><div class="steps">
+<section class="section soft-section" id="method"><div class="container"><div class="section-label">方法</div><h2>从独立优化树到一个 Skill。</h2><p class="section-intro">所有树从同一个初始 Skill 出发，基于独立的训练-验证视图执行反馈，探索各自的局部最优结果。</p><div class="steps">
 <article><span class="step-index">1</span><h3>随机化数据视角</h3><p>独立地将公开训练集划分为树内训练子集和验证子集。训练轨迹用于生成补丁，验证子集用于评估补丁。</p></article>
 <article><span class="step-index">2</span><h3>生长与剪枝</h3><p>每次扩展采样多个补丁，仅保留相对父节点具有正验证增益的子节点，并在森林共享预算下优先扩展已接受的节点。</p></article>
 <article><span class="step-index">3</span><h3>聚合各树优胜者</h3><p>从每棵符合条件的树中保留一个具有正增益的优胜 Skill，在完整训练集上评估后，选择其中一个或进行层次化合并。</p></article>
