@@ -46,7 +46,7 @@
 <section class="section container" id="contributions"><div class="section-label">主要贡献</div><h2>多样性、效率和集成</h2><div class="cards">
 <article class="card"><div class="card-number">01 / 多样性</div><h3>Skill 优化器集成</h3><p>在目标模型与优化器能力匹配的设置下，独立优化树、保留分支和树专属数据划分，同时丰富文本更新路径与验证视角。</p></article>
 <article class="card"><div class="card-number">02 / 效率</div><h3>预算约束下的森林构建</h3><p>共享扩展预算、增益优先生长、验证引导剪枝、提前拒绝和 Root 分数缓存，将计算资源集中在有潜力的分支上。</p></article>
-<article class="card"><div class="card-number">03 / 集成</div><h3>推理时只使用一个 Skill</h3><p>Select 返回一个已有的树内优胜 Skill；Merge 综合不同优胜 Skill 中兼容的规则。两者都为参数冻结的智能体生成一个 Skill。</p></article>
+<article class="card"><div class="card-number">03 / 集成</div><h3>通过 Select / Merge 产生最终 Skill</h3><p>通过直接选择（Select）或分数引导的层级合并（Merge），聚合各树的 local winner，产生最终可部署的 Skill。Merge 在每一层合并相邻的 Skill，保留兼容规则，并依据完整训练集上的可比分数引导冲突消解，逐层合并直至得到一个 Skill。</p></article>
 </div></section>
 <section class="section soft-section" id="method"><div class="container"><div class="section-label">方法</div><h2>从独立优化树到一个 Skill。</h2><p class="section-intro">所有树从同一个初始 Skill 出发。每棵树仅使用公开训练数据，基于执行反馈探索各自的更新。</p><div class="steps">
 <article><span class="step-index">1</span><h3>随机化数据视角</h3><p>独立地将公开训练集划分为树内训练子集和验证子集。训练轨迹用于生成补丁，验证子集用于评估补丁。</p></article>
