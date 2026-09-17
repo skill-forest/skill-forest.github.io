@@ -44,3 +44,7 @@ Also update the HTML claims and tables to match the revised manuscript. The buil
 The page explicitly labels the manuscript as a draft; it makes no acceptance or publication claim. All reported scores come from `paper/sections/05_results.tex`. Overall scores are macro-averages over five benchmarks. The 71.68% construction-rollout reduction uses **summed counts**, not the savings table's macro-average, and excludes final selection, aggregation, and held-out testing. Oracle is shown as a held-out-test-selected diagnostic, not a deployable baseline. Unavailable GEPA results remain blank (displayed as em dashes). The BibTeX is provisional, with no fabricated arXiv identifier.
 
 Do not add an author-bearing PDF or restore author information while double-blind review is ongoing. The private Overleaf checkout in `paper/` is not part of the website deployment.
+
+## Languages
+
+`index.html` is the default English page. `zh.html` contains the Chinese version. The EN / 中文 switch is at the top left. Both versions share styles, scripts, figures, and identical numerical results. Figure labels and canonical BibTeX metadata retain English. Update both HTML files when content changes.
