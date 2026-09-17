@@ -35,7 +35,7 @@
   </div>
 </section>
 <section class="container overview" id="overview">
-  <div class="tldr"><div class="section-label">核心思路</div><p><strong>单一路径优化容易受早期决策影响。</strong> Skill-Forest 在不同的训练–验证数据视角下生长独立的 Skill 优化树，再将各树的优胜 Skill 选择或合并为<strong>一个可部署的 Skill</strong>，无需更新模型参数，也不依赖更强的优化器。</p></div>
+  <div class="tldr"><div class="section-label">核心思路</div><p><strong>基于文本梯度的 Skill 优化受到随机噪声的影响，使整个优化过程呈现高方差和不稳定性。</strong> Skill-Forest 在不同的训练–验证数据视角下生长独立的 Skill 优化树，结合共享扩展预算、增益优先扩展、验证引导剪枝和提前拒绝，高效构建森林。随后，通过层次化合并或直接选择，聚合各树的 local winner，得到<strong>一个最终可部署的 Skill</strong>，无需更新模型参数，也不依赖更强的优化模型。</p></div>
   <figure class="overview-figure"><a href="assets/overview.png" target="_blank" rel="noopener" aria-label="查看完整尺寸的方法概览"><img src="assets/overview.png" width="2200" alt="Skill-Forest 概览：独立训练–验证划分引导分支式 Skill 优化，各树优胜者通过选择或合并形成一个 Skill。"></a><figcaption><span>图 1。</span> 独立的训练–验证划分通过轨迹生成的补丁和相对父节点的验证，引导树结构 Skill 优化。各树优胜者通过合并或选择，形成一个可部署的 Skill。</figcaption></figure>
 </section>
 <section class="section soft-section" id="abstract"><div class="container reading-width"><div class="section-label">摘要</div><h2>在优化器层面进行集成，<br>最终部署一个 Skill。</h2>
