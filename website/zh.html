@@ -38,7 +38,7 @@
   <div class="tldr"><div class="section-label">核心思路</div><p><strong>基于文本梯度的 Skill 优化受到随机噪声的影响，使整个优化过程呈现高方差和不稳定性。</strong> Skill-Forest 在不同的训练–验证数据视角下生长独立的 Skill 优化树，结合共享扩展预算、增益优先扩展、验证引导剪枝和提前拒绝，高效构建森林。随后，通过层次化合并或直接选择，聚合各树的 local winner，得到<strong>一个最终可部署的 Skill</strong>，无需更新模型参数，也不依赖更强的优化模型。</p></div>
   <figure class="overview-figure"><a href="assets/overview.png" target="_blank" rel="noopener" aria-label="查看完整尺寸的方法概览"><img src="assets/overview.png" width="2200" alt="Skill-Forest 概览：独立训练–验证划分引导分支式 Skill 优化，各树优胜者通过选择或合并形成一个 Skill。"></a><figcaption><span>图 1。</span> 独立的训练–验证划分通过轨迹生成的补丁和相对父节点的验证，引导树结构 Skill 优化。各树优胜者通过合并或选择，形成一个可部署的 Skill。</figcaption></figure>
 </section>
-<section class="section soft-section" id="abstract"><div class="container reading-width"><div class="section-label">摘要</div><h2>在优化器层面进行集成，<br>最终部署一个 Skill。</h2>
+<section class="section soft-section" id="abstract"><div class="container reading-width"><div class="section-label">摘要</div><h2>从单路径 Skill 优化走向随机森林式集成优化</h2>
 <p>Agent Skills 将可复用的过程性知识编码在模型参数之外，从而适配参数冻结的大语言模型智能体。在数据有限的情况下，带噪声的文本更新，以及在小规模验证集上的反复选择，会使单一路径优化对早期决策和评估噪声较为敏感。</p>
 <p>我们提出 Skill-Forest：受随机森林“随机化与聚合”原则启发的优化器层面集成方法。每棵树使用独立采样的训练–验证划分，独立搜索树内最优 Skill。共享预算下的增益优先扩展、验证引导剪枝和提前拒绝，实现高效的森林构建。随后，通过直接选择（Select）或层次化合并（Merge），将各树最优 Skill 聚合为一个可部署的 Skill。该设计同时丰富优化路径和验证视角，以降低文本梯度优化的高方差。</p>
 <p>我们在五个基准上评估 Skill-Forest，涵盖直接对话任务、工具使用和持续环境交互。七树 Select 和 Merge 相比 No-skill 的平均留出测试 Hard 分数分别提高 12.82 和 12.87 个百分点，相比 SkillOpt 分别提高 2.59 和 2.63 个百分点。相较完整构建深度为三的三叉树，七树 Skill-Forest 的训练与验证 rollout 数减少 71.68%，支持高效的多路径 Skill 优化。</p>
