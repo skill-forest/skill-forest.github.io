@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Skill-Forest: Randomized Ensembles of Textual Skill Optimizers. An optimizer-level ensemble for efficient, execution-grounded Agent Skill optimization.">
+  <meta name="theme-color" content="#196447">
+  <meta property="og:title" content="Skill-Forest: Randomized Ensembles of Textual Skill Optimizers">
+  <meta property="og:description" content="Diversify optimization paths. Aggregate into one deployable Skill.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skill-forest.github.io/">
+  <meta property="og:image" content="https://skill-forest.github.io/assets/overview.png">
+  <title>Skill-Forest | Randomized Ensembles of Textual Skill Optimizers</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav container" aria-label="Main navigation">
+    <a class="brand" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 3 2 15h4L1 23h6v6h4v-6h5l-5-8h4L9 3Zm14 4-6 10h3l-4 7h5v5h4v-5h6l-5-7h3L23 7Z" fill="currentColor"/></svg>Skill-Forest</a>
+    <div class="nav-links"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#citation">Citation</a></div>
+  </nav>
+</header>
+<main id="main">
+<section class="hero container">
+  <div class="eyebrow"><span class="status-dot"></span> Research project <span class="badge">Draft manuscript</span></div>
+  <h1><span>Skill-Forest</span><br>Randomized Ensembles of<br class="desktop-break"> Textual Skill Optimizers</h1>
+  <p class="hero-description">Diversify optimization paths.<br class="mobile-break"> Aggregate into one deployable Skill.</p>
+  <div class="resource-links">
+    <a class="button" id="code-link" aria-disabled="true" role="link" tabindex="0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5-7 7 7 7m8-14 7 7-7 7m-3-16-2 18"/></svg>Code <span class="button-tag">Coming soon</span></a>
+    <a class="button" id="arxiv-link" aria-disabled="true" role="link" tabindex="0"><span class="arxiv-icon" aria-hidden="true">χ</span>arXiv <span class="button-tag">Coming soon</span></a>
+  </div>
+</section>
+<section class="container overview" id="overview">
+  <div class="tldr"><div class="section-label">THE IDEA</div><p><strong>One optimization path is a fragile bet.</strong> Skill-Forest grows independent Skill optimization trees on different training–validation views, then selects or merges their winners into <strong>one deployable Skill</strong>—without updating model parameters or relying on a stronger optimizer.</p></div>
+  <figure class="overview-figure"><a href="assets/overview.png" target="_blank" rel="noopener" aria-label="Open full-size Skill-Forest overview"><img src="assets/overview.png" width="2200" alt="Skill-Forest overview: independent training–validation splits guide branching Skill optimization; tree-local winners are selected or merged into a single Skill."></a><figcaption><span>Figure 1.</span> Independent training–validation splits guide tree-structured Skill optimization through trajectory-derived patches and parent-relative validation. Tree-local winners are merged or selected to produce a single deployable Skill.</figcaption></figure>
+</section>
+<section class="section soft-section" id="abstract"><div class="container reading-width"><div class="section-label">ABSTRACT</div><h2>Ensembling the optimizers,<br>not the agent’s predictions.</h2>
+<p>Agent Skills adapt frozen large language model agents by encoding reusable procedural knowledge outside model parameters. Under limited data, noisy textual updates and repeated selection on small validation sets can make single-path optimization sensitive to early decisions and evaluation noise.</p>
+<p>We introduce Skill-Forest, an optimizer-level ensemble inspired by the randomize-and-aggregate principle of Random Forests. Each tree uses an independently sampled training–validation split and independently searches for its tree-local best Skill. Gain-prioritized expansion under a shared budget, validation-guided pruning, and early rejection enable efficient forest construction. The resulting tree-local best Skills are then aggregated into one deployable Skill through direct selection (Select) or hierarchical merge (Merge). This design diversifies both optimization paths and validation views to reduce the high variance associated with textual-gradient optimization.</p>
+<p>We evaluate Skill-Forest across five benchmarks spanning direct-chat tasks, tool use, and persistent environment interaction. Seven-tree Select and Merge improve the mean held-out Hard score over No-skill by 12.82 and 12.87 percentage points, respectively. They exceed SkillOpt by 2.59 and 2.63 percentage points, respectively. Seven-tree Skill-Forest reduces training and validation rollouts by 71.68% relative to complete depth-three ternary-tree construction, supporting efficient multi-path Skill optimization.</p>
+</div></section>
+<section class="section container" id="contributions"><div class="section-label">CONTRIBUTIONS</div><h2>Explore broadly. Validate locally. Deploy simply.</h2><div class="cards">
+<article class="card"><div class="card-number">01 / DIVERSITY</div><h3>An ensemble of Skill optimizers</h3><p>Independent trees, persistent branching, and tree-specific data splits diversify both textual update paths and validation views in a capability-matched setting.</p></article>
+<article class="card"><div class="card-number">02 / EFFICIENCY</div><h3>Budgeted forest construction</h3><p>A shared expansion budget, gain-prioritized growth, validation-guided pruning, early rejection, and cached Root scores focus computation on promising branches.</p></article>
+<article class="card"><div class="card-number">03 / DEPLOYMENT</div><h3>One Skill at inference time</h3><p>Select returns an existing tree winner. Merge synthesizes compatible rules across winners. Both produce a single Skill for the frozen agent.</p></article>
+</div></section>
+<section class="section soft-section" id="method"><div class="container"><div class="section-label">METHOD</div><h2>From independent trees to a single Skill.</h2><p class="section-intro">All trees begin with the same initial Skill. Each tree explores its own execution-grounded updates using only the released training data.</p><div class="steps">
+<article><span class="step-index">1</span><h3>Randomize the data views</h3><p>Independently partition the released training split into tree-local training and validation subsets. Training trajectories generate patches; validation evaluates them.</p></article>
+<article><span class="step-index">2</span><h3>Grow and prune</h3><p>Sample multiple patches per expansion. Retain children with positive parent-relative validation gain, and prioritize accepted nodes within a forest-wide budget.</p></article>
+<article><span class="step-index">3</span><h3>Aggregate the winners</h3><p>Keep one positive-gain winner per eligible tree. Evaluate winners on the complete training split, then select one or hierarchically merge them.</p></article>
+</div><div class="method-detail"><div><h3>Exact early rejection</h3><p>During incremental validation, reject a candidate as soon as even perfect scores on all remaining tasks cannot exceed its parent. This preserves the candidate set obtained by full validation.</p></div><div><h3>Shared Root validation</h3><p>Cache the initial Skill’s score on each distinct validation task. Every tree computes its own Root score from the cache, avoiding repeated evaluation on overlapping tasks.</p></div></div><div class="config-strip"><span><strong>GPT-5.4-mini</strong>Target + optimizer</span><span><strong>7 trees</strong>Main configuration</span><span><strong>Depth 3</strong>Maximum depth</span><span><strong>30 expansions</strong>Forest-wide budget</span><span><strong>3 proposals</strong>Per expansion</span></div><p class="small-note">A positive tree-local validation gain does not guarantee held-out test improvement or make scores comparable across trees.</p></div></section>
+<section class="section container" id="results"><div class="section-label">KEY RESULTS</div><h2>Stronger Skills across five benchmarks.</h2><p class="section-intro">Direct-chat reasoning, multi-round tool use, and persistent environment interaction. Results below are reported in the current draft.</p><div class="metrics"><article><strong>66.87<span>%</span></strong><p>Mean held-out Hard score<br>Seven-tree Merge</p></article><article><strong>+12.87<span>pp</span></strong><p>Overall gain over No-skill<br>Seven-tree Merge</p></article><article><strong>+2.63<span>pp</span></strong><p>Overall gain over SkillOpt<br>Seven-tree Merge</p></article><article><strong>71.68<span>%</span></strong><p>Fewer construction rollouts<br>vs. complete ternary trees</p></article></div>
+<div class="table-heading"><h3>Main results</h3><span>Mean Hard score (%) ↑</span></div><p class="small-note" id="table-description">Three held-out evaluations per method. Overall is the mean across five benchmarks. Scroll horizontally on smaller screens. “—” denotes unavailable results.</p><div class="table-scroll" tabindex="0" role="region" aria-label="Main results table, horizontally scrollable" aria-describedby="table-description"><table><caption class="sr-only">Main results on five held-out benchmarks from the current Skill-Forest draft</caption><thead><tr><th scope="col">Method</th><th scope="col">SearchQA</th><th scope="col">SpreadsheetBench</th><th scope="col">OfficeQA</th><th scope="col">LiveMath</th><th scope="col">ALFWorld</th><th scope="col">Overall</th></tr></thead><tbody>
+<tr><th scope="row">No-skill</th><td>76.90</td><td>80.24</td><td>28.49</td><td>27.42</td><td>56.97</td><td>54.00</td></tr>
+<tr><th scope="row">Initial Skill</th><td>76.67</td><td>79.40</td><td>43.99</td><td>28.23</td><td>70.65</td><td>59.79</td></tr>
+<tr><th scope="row">Skill Creator</th><td>79.36</td><td>80.60</td><td><strong>56.20</strong></td><td>31.18</td><td>77.36</td><td>64.94</td></tr>
+<tr><th scope="row">Trace2Skill</th><td>77.50</td><td>81.79</td><td>54.84</td><td>27.69</td><td>76.62</td><td>63.69</td></tr>
+<tr><th scope="row">GEPA</th><td>79.62</td><td>—</td><td>—</td><td>31.45</td><td>—</td><td>—</td></tr>
+<tr><th scope="row">SkillOpt</th><td>80.67</td><td>80.71</td><td>52.71</td><td>31.72</td><td>75.37</td><td>64.24</td></tr>
+<tr class="group-row"><th colspan="7" scope="colgroup">5-tree Skill-Forest</th></tr>
+<tr><th scope="row">Merge</th><td>80.26</td><td>81.79</td><td>55.04</td><td>34.68</td><td>82.09</td><td>66.77</td></tr>
+<tr><th scope="row">Select</th><td>80.40</td><td>81.19</td><td>54.84</td><td>34.14</td><td>78.61</td><td>65.84</td></tr>
+<tr class="oracle"><th scope="row">Oracle †</th><td>80.40</td><td>81.31</td><td>54.84</td><td>34.95</td><td><strong>83.33</strong></td><td>66.97</td></tr>
+<tr class="group-row"><th colspan="7" scope="colgroup">7-tree Skill-Forest</th></tr>
+<tr class="highlight"><th scope="row">Merge <span class="row-tag">Ours</span></th><td>80.52</td><td>81.07</td><td>55.23</td><td>34.68</td><td>82.84</td><td>66.87</td></tr>
+<tr class="highlight"><th scope="row">Select <span class="row-tag">Ours</span></th><td>80.21</td><td>81.67</td><td>53.88</td><td><strong>36.02</strong></td><td>82.34</td><td>66.82</td></tr>
+<tr class="oracle"><th scope="row">Oracle †</th><td><strong>81.12</strong></td><td><strong>83.10</strong></td><td>55.04</td><td><strong>36.02</strong></td><td>82.34</td><td><strong>67.52</strong></td></tr>
+</tbody></table></div><p class="table-note">Bold marks the highest score in each column, including diagnostic rows. † Oracle is selected using held-out test scores: it diagnoses the tree-winner candidate pool and is not a deployable method or an upper bound on a newly merged Skill.</p>
+<div class="result-notes"><article><h3>Gains vary by task</h3><p>Seven-tree Merge achieves the highest overall score among deployable methods in the draft. Neither Merge nor Select is uniformly better, and Skill-Forest does not outperform every baseline on every benchmark.</p></article><article><h3>Efficiency has a defined scope</h3><p>The 71.68% reduction uses summed training and validation counts across the five benchmarks, relative to complete depth-three ternary-tree construction. It excludes final selection, aggregation, and held-out testing.</p></article></div>
+</section>
+<section class="section soft-section" id="analysis"><div class="container"><div class="section-label">ANALYSIS</div><h2>The performance–cost trade-off.</h2><p class="section-intro">Repeated optimization runs on LiveMath and ALFWorld examine the effects of tree count, branching breadth, and parallel trajectories.</p><figure><a href="assets/search-cost.png" target="_blank" rel="noopener" aria-label="Open full-size performance and cost analysis"><img src="assets/search-cost.png" width="2200" loading="lazy" alt="Performance versus optimization rollout cost for Skill-Forest and SkillOpt configurations on LiveMath and ALFWorld."></a><figcaption><span>Figure 2.</span> Small markers show five repeated optimization runs per configuration; open diamonds show configuration means; shaded regions indicate sample standard deviations across runs. Each run’s test score averages three held-out evaluations of a fixed selected Skill. Cost includes training and validation task rollouts and final selection.</figcaption></figure></div></section>
+<section class="section container reading-width" id="citation"><div class="citation-heading"><div><div class="section-label">CITATION</div><h2>BibTeX</h2></div><button class="copy-button" type="button" id="copy-citation">Copy BibTeX</button></div><p class="small-note">Draft citation. Publication metadata will be updated when available.</p><pre><code id="bibtex">@misc{skillforest2026,
+  title  = {Skill-Forest: Randomized Ensembles of Textual Skill Optimizers},
+  year   = {2026},
+  note   = {Draft manuscript},
+  url    = {https://skill-forest.github.io/}
+}</code></pre><p class="sr-only" id="copy-status" role="status" aria-live="polite"></p></section>
+</main>
+<footer><div class="container"><a class="brand" href="#">Skill-Forest</a><p>Randomized Ensembles of Textual Skill Optimizers</p><p class="footer-note">Based on the current draft manuscript · Content and results may be revised.<br>Project-page structure inspired by <a href="https://skill-composer.github.io/" target="_blank" rel="noopener">SkillComposer</a>.</p></div></footer>
+</body>
+</html>
